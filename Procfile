@@ -1,1 +1,1 @@
-web: gunicorn recommend-song-bot-skiymaaa : main --preload
+web: gunicorn python main.py --preload
