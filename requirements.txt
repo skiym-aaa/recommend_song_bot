@@ -4,6 +4,7 @@ click==7.1.2
 Flask==1.1.2
 future==0.18.2
 gensim==4.0.1
+gunicorn
 idna==2.10
 itsdangerous==1.1.0
 jaconv==0.3
