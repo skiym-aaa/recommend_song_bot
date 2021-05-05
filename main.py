@@ -14,8 +14,6 @@ import os
 
 app = Flask(__name__)
 
-import recommend
-
 #環境変数取得
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
 YOUR_CHANNEL_SECRET = os.environ["YOUR_CHANNEL_SECRET"]
@@ -43,13 +41,9 @@ def callback():
 
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    query = event.message.text
-    result_indexes = recommend.recommend(query)
-    result_index = result_indexes[0].astype('U13')
-
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=result_index))
+        TextSendMessage(text=event.message.text))
 
 
 if __name__ == "__main__":
