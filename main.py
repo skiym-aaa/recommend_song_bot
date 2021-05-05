@@ -14,6 +14,7 @@ import os
 
 app = Flask(__name__)
 
+import argparse
 import recommend
 
 #環境変数取得
