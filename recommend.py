@@ -37,11 +37,39 @@ def clean_text(text):
 
 # MeCabで単語を分かち書き
 def text2wakati(text):
-    tagger = MeCab.Tagger('-Ochasen')
-    parsed_text = tagger.parse(text)
-    # 除外する品詞
-    stop_parts = ('名詞-接尾-形容動詞語幹', 'その他', 'フィラー', '副詞', '助動詞', '助詞', '動詞-接尾', '動詞-非自立', '名詞-動詞非自立的', '名詞-特殊-助動詞語幹', '名詞-接尾-サ変接続', '名詞-接尾-副詞可能', '名詞-接尾-人名', '名詞-接尾-助動詞語幹', '名詞-接尾-形容動詞語幹', '名詞-接尾-特殊', '名詞-非自立', '感動詞', '接続詞', '接頭詞-動詞接続', '接頭詞-形容詞接続', '形容詞-接尾', '形容詞-非自立', '記号-一般', '記号-句点', '記号-括弧閉', '記号-括弧開', '記号-空白', '記号-読点', '連体詞')
-    return '' if not parsed_text else ' '.join([y[2] for y in [x.split('\t') for x in parsed_text.splitlines()[:-1]] if (len(y) == 6) and (not y[3].startswith(stop_parts))])
+    # 取り出したい品詞
+    select_conditions = ['動詞', '形容詞', '名詞']
+
+    # 分かち書きオブジェクト
+    tagger = MeCab.Tagger()
+
+    # Neologdの指定版 最新語に対応する
+    # tagger = MeCab.Tagger('-d /usr/lib64/mecab/dic/mecab-ipadic-neologd')
+
+    # 安定するらしい
+    tagger.parse('')
+
+    # 分けてノードごとにする
+    node = tagger.parseToNode(text)
+    terms = []
+
+    while node:
+
+        # 単語
+        term = node.surface
+
+        # 品詞
+        pos = node.feature.split(',')[0]
+
+        # もし品詞が条件と一致してたら
+        if pos in select_conditions:
+            terms.append(term)
+
+        node = node.next
+
+    # 連結おじさん
+    text_result = ' '.join(terms)
+    return text_result
 
 
 # コーパスの作成
@@ -81,7 +109,7 @@ def doc2vec(content_corpus):
 
 # Doc2Vec用にクエリを分かち書き
 def tokenize(text):
-    wakati = MeCab.Tagger("-O wakati")
+    wakati = MeCab.Tagger("-Owakati")
     wakati.parse("")
     return wakati.parse(text).strip().split()
 
