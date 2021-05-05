@@ -1,1 +1,1 @@
-web: gunicorn recommend_song_bot:main --preload
+web: python main.py
