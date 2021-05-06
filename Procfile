@@ -1,1 +1,1 @@
-web: gunicorn main:app --preload --timeout 180
+web: python main.py
