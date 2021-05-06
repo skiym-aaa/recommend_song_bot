@@ -53,8 +53,7 @@ def handle_message(event):
 
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=artist)
-        TextSendMessage(text=song))
+        TextSendMessage(text=artist))
 
 
 if __name__ == "__main__":
