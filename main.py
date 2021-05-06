@@ -48,8 +48,8 @@ def handle_message(event):
     query = event.message.text
     result_indexes = recommend.recommend(query)
     result_index = df.values[result_indexes[0]]
-    artist = result_indexe[0].astype('U13')
-    song = result_indexe[1].astype('U13')
+    artist = result_index[0].astype('U13')
+    song = result_index[1].astype('U13')
 
     line_bot_api.reply_message(
         event.reply_token,
