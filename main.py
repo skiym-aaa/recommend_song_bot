@@ -48,12 +48,11 @@ def handle_message(event):
     query = event.message.text
     result_indexes = recommend.recommend(query)
     result_index = df.values[result_indexes[0]]
-    artist = result_index[0]
-    song = result_index[1]
+    song = result_index[0]
 
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=artist + "：" + song))
+        TextSendMessage(text=song))
 
 
 if __name__ == "__main__":
