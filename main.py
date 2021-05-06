@@ -13,7 +13,10 @@ import os
 
 app = Flask(__name__)
 
+import pandas as pd
 import recommend
+# データの読み込み
+df = pd.read_csv('AkimotoYasushi_all.csv', index_col=0)
 
 #環境変数取得
 YOUR_CHANNEL_ACCESS_TOKEN = os.environ["YOUR_CHANNEL_ACCESS_TOKEN"]
@@ -44,11 +47,14 @@ def callback():
 def handle_message(event):
     query = event.message.text
     result_indexes = recommend.recommend(query)
-    result_index = result_indexes[0].astype('U13')
+    result_index = df.values[result_indexes[0]]
+    artist = result_indexe[0].astype('U13')
+    song = result_indexe[1].astype('U13')
 
     line_bot_api.reply_message(
         event.reply_token,
-        TextSendMessage(text=result_index))
+        TextSendMessage(text=artist)
+        TextSendMessage(text=song))
 
 
 if __name__ == "__main__":
