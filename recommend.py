@@ -24,6 +24,11 @@ from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.feature_extraction.text import TfidfTransformer
 from sklearn.feature_extraction.text import TfidfVectorizer
 
+# Doc2Vecライブラリ
+import pickle
+from gensim import models
+from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+
 
 # データの読み込み
 df = pd.read_csv('AkimotoYasushi_all.csv', index_col=0)
@@ -101,11 +106,11 @@ def create_content_corpus():
     return content_corpus
 
 # Doc2Vecモデルの構築
-def doc2vec(content_corpus):
-    from gensim.models.doc2vec import Doc2Vec, TaggedDocument
-    documents = [TaggedDocument(doc, [i]) for i, doc in enumerate(content_corpus)]
-    model = Doc2Vec(documents, dm =1, vector_size=300, window=5, min_count=1, workers=4)
-    return model
+# def doc2vec(content_corpus):
+#     from gensim.models.doc2vec import Doc2Vec, TaggedDocument
+#     documents = [TaggedDocument(doc, [i]) for i, doc in enumerate(content_corpus)]
+#     model = Doc2Vec(documents, dm =1, vector_size=300, window=5, min_count=1, workers=4)
+#     return model
 
 # Doc2Vec用にクエリを分かち書き
 def tokenize(text):
@@ -117,7 +122,8 @@ def tokenize(text):
 title_corpus = create_title_corpus()
 content_corpus = create_content_corpus()
 # Doc2Vecモデル
-model = doc2vec(content_corpus)
+# model = doc2vec(content_corpus)
+model = models.Doc2Vec.load('doc2vec.model')
 
 # 検索
 def recommend(query):
